@@ -9,10 +9,10 @@ public class dbConnection {
 	Connection dbConnection = null;
 	
 	
-	//metoda na nawiązanie polączenia
+	//metoda na nawiązanie połączenia
 	public Connection getConnection() {
 		try {
-			this.dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/CodingSchool?useSSL=false",
+			this.dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/CodingSchool?useSSL=false&characterEncoding=utf-8",
 					"root",
 					"coderslab"
 					);

@@ -79,7 +79,7 @@ public class Exercise {
 	}	
 		
 	//wczytywanie ćwiczenia po ID - metoda statyczna więc używamy już na klasie, nie na obiekcie	
-	static public Exercise loadExerciserById(Connection conn, int id) throws SQLException {
+	static public Exercise loadExerciseById(Connection conn, int id) throws SQLException {
 		String sql = "SELECT * FROM exercise WHERE id = ?";
 		PreparedStatement preparedStatement;
 		preparedStatement = conn.prepareStatement(sql);
@@ -126,6 +126,94 @@ public class Exercise {
 			this.id=0;
 		}
 	}
+	
+	
+	
+	//zadanie 5 - loadAllByUserId - to powinno być w klasie solution, nie exercise, więc tam dodałem
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Zadanie program użytkownika 1 - dorobiona przeze mnie metoda która pokazuje do jakich zadań użytkownik dodał rozwiązania
+	
+	//wczytujemy ćwiczenia do których istnieje rozwiązanie
+	static public Exercise[] loadAllSolvedExercises(Connection conn, int users_id) throws SQLException {
+		ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+		String sql = "SELECT * FROM exercise LEFT JOIN  solution ON exercise.id=solution.exercise_id WHERE solution.users_id = ? ORDER BY exercise.id ASC"; 
+		PreparedStatement preparedStatement;
+		preparedStatement = conn.prepareStatement(sql);
+		preparedStatement.setInt(1, users_id);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			Exercise loadedExercise = new Exercise();
+			loadedExercise.id = resultSet.getInt("id");
+			loadedExercise.title = resultSet.getString("title");
+			loadedExercise.description = resultSet.getString("description");
+			exercises.add(loadedExercise);
+		}
+		Exercise[] lArray = new Exercise[exercises.size()];
+		lArray = exercises.toArray(lArray);
+		return lArray;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//ponizsze jest w sumie niepotrzebne bo zle zrozumialem tresc zadania
+	
+	//Zadanie program użytkownika 1 - dorobiona przeze mnie metoda która pokazuje do jakich zadań użytkownik nie dodał rozwiązań
+	
+	//wczytujemy wszystkie brakujące ćwiczenia
+	static public Exercise[] loadAllMissingExercises(Connection conn, int users_id) throws SQLException {
+		ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+		String sql = "SELECT * FROM exercise WHERE exercise.id NOT IN (SELECT exercise.id FROM exercise LEFT JOIN  solution ON exercise.id=solution.exercise_id WHERE solution.users_id = ?) ORDER BY exercise.id ASC"; 
+		PreparedStatement preparedStatement;
+		preparedStatement = conn.prepareStatement(sql);
+		preparedStatement.setInt(1, users_id);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			Exercise loadedExercise = new Exercise();
+			loadedExercise.id = resultSet.getInt("id");
+			loadedExercise.title = resultSet.getString("title");
+			loadedExercise.description = resultSet.getString("description");
+			exercises.add(loadedExercise);
+		}
+		Exercise[] lArray = new Exercise[exercises.size()];
+		lArray = exercises.toArray(lArray);
+		return lArray;
+	}
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	
 	
